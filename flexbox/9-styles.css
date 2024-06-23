@@ -380,7 +380,7 @@ ul.row {
 /* Section ABOUT US
     ============================= */
 
-[class*='col-'] {
+.section-about-us [class*='col-'] {
     align-self: center;
 }
   
