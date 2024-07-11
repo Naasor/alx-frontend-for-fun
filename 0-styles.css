@@ -1,0 +1,48 @@
+*, *::before, *::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+    height: 100vh;
+    font-weight: bolder;
+    font-size: 2rem;
+}
+
+ul {
+    display: grid;
+    place-items: center;
+    list-style: none;
+    height: 100vh;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+li {
+   border: 1.8px solid gray;
+   border-radius: 9px;
+   display: grid;
+   place-items: center;
+   width: 380px;
+   height: 520px;
+   grid-template-rows: 1fr 2.5fr;
+   background-color: #f7f7f7;
+}
+
+span {
+    height: 100%;
+    width: 220px;
+}
+
+span.i-html {
+    background: url(0-sprite.png) no-repeat -30px -40px;
+}
+
+span.i-css {
+    background: url(0-sprite.png) no-repeat -319px -40px;
+}
+
+span.i-js {
+    background: url(0-sprite.png) no-repeat -610px -40px;
+}
