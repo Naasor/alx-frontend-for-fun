@@ -2,6 +2,19 @@
 @import '103-sort_list.scss';
 
 /* Custom sort function using quicksort algorithm */
+@function compare($a, $b) {
+  @if str-length($a) != str-length($b) {
+    @return str-length($a) < str-length($b);
+  } @else {
+    @for $i from 1 through str-length($a) {
+      @if str-slice($a, $i, $i) != str-slice($b, $i, $i) {
+        @return str-slice($a, $i, $i) < str-slice($b, $i, $i);
+      }
+    }
+    @return false; // If all characters are equal, they are considered the same
+  }
+}
+
 @function sort($list) {
   @if length($list) < 2 {
     @return $list;
@@ -16,7 +29,7 @@
   $left: ();
   $right: ();
   @each $item in $rest {
-    @if str-insert($item, '', 1) < str-insert($pivot, '', 1) {
+    @if compare($item, $pivot) {
       $left: append($left, $item);
     } @else {
       $right: append($right, $item);
