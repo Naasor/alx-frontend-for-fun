@@ -3,27 +3,27 @@
 
 /* Custom sort function using quicksort algorithm */
 @function sort($list) {
-    @if length($list) < 2 {
-      @return $list;
+  @if length($list) < 2 {
+    @return $list;
+  }
+
+  $pivot: nth($list, 1);
+  $rest: ();
+  @for $i from 2 through length($list) {
+    $rest: append($rest, nth($list, $i));
+  }
+
+  $left: ();
+  $right: ();
+  @each $item in $rest {
+    @if str-insert($item, '', 1) < str-insert($pivot, '', 1) {
+      $left: append($left, $item);
+    } @else {
+      $right: append($right, $item);
     }
-  
-    $pivot: nth($list, 1);
-    $rest: ();
-    @for $i from 2 through length($list) {
-      $rest: append($rest, nth($list, $i));
-    }
-  
-    $left: ();
-    $right: ();
-    @each $item in $rest {
-      @if $item < $pivot {
-        $left: append($left, $item);
-      } @else {
-        $right: append($right, $item);
-      }
-    }
-  
-    @return join(join(sort($left), $pivot, comma), sort($right), comma);
+  }
+
+  @return join(join(sort($left), $pivot, comma), sort($right), comma);
 }
 
 $list_sorted: sort($list_to_sort);
