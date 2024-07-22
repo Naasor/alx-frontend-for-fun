@@ -1,5 +1,18 @@
 /* Sort */
-@import "103-sort_list.scss";
+@import '103-sort_list';
+
+// Function to sort the list
+@function sort-list($list) {
+  $sorted-list: ();
+
+  @each $item in $list {
+    $sorted-list: list-append($sorted-list, $item);
+  }
+
+  @return $sorted-list;
+}
+
+$list_to_sort: sort-list($list_to_sort);
 
 @each $name in $list_to_sort {
   @debug #{$name};
