@@ -1,42 +1,52 @@
-/* 103-sort_list.scss */
-/* Define the list to sort */
-$list_to_sort: (
-  'orange',
-  'apple',
-  'banana',
-  'grape',
-  'mango'
-);
 
-// Define a function to compare two strings
-@function compare($a, $b) {
-  @return $a < $b;
+$sort-order: a b c d e f g h i j k l m n o p q r s t u v w x y z !default;
+
+@function compare($string-a, $string-b, $sort-order) { 
+  $string-a: to-lower-case($string-a + unquote("")); 
+  $string-b: to-lower-case($string-b + unquote(""));	 
+  
+  @for $i from 1 through min( 
+      str-length($string-a), str-length($string-b)) { 
+  
+    $char-a: str-slice($string-a, $i, $i); 
+    $char-b: str-slice($string-b, $i, $i); 
+    
+    @if $char-a and $char-b and index( 
+      $order, $char-a) != index($sort-order, $char-b) { 
+    @return index( 
+      $sort-order, $char-a) < index($sort-order, $char-b); 
+    } 
+  } 
+    
+  @return str-length($string-a) < str-length($string-b); 
 }
 
-// Define a function to perform bubble sort
-@function bubbleSort($list) {
-  $length: length($list);
-  $sorted: $list;
-  $swap: true;
+@function swap($list, $index-a, $index-b) { 
+  @if abs($index-a) > length($list) or 
+        abs($index-b) > length($list) { 
+    @return $list; 
+  } 
+  $temp: nth($list, $index-a); 
+  $list: set-nth($list, $index-a, nth($list, $index-b)); 
+  $list: set-nth($list, $index-b, $temp); 
+  @return $list; 
+} 
+  
+@function sort($list, $sort-order) { 
+  @for $i from 1 through length($list) { 
+  @for $j from $i * -1 through -1 { 
+    $j: abs($j); 
+    @if $j > 1 and compare(nth($list, $j), 
+          nth($list, $j - 1), $sort-order) { 
+      $list: swap($list, $j, $j - 1); 
+    } 
+    } 
+  } 
+  @return $list; 
+} 
+    
+$list_to_sort: john, anna, zoe, kim, felicia, carrie;
 
-  @while $swap {
-    $swap: false;
+$list_sorted: sort($list_to_sort);
 
-    @for $i from 1 through $length - 1 {
-      @if compare(nth($sorted, $i), nth($sorted, $i + 1)) {
-        $temp: nth($sorted, $i);
-        $sorted: set-nth($sorted, $i, nth($sorted, $i + 1));
-        $sorted: set-nth($sorted, $i + 1, $temp);
-        $swap: true;
-      }
-    }
-  }
-
-  @return $sorted;
-}
-
-// Sort the list using bubble sort
-$sortedList: bubbleSort($list_to_sort);
-
-// Print the sorted list in the debug output
-@debug $sortedList;
+@debug $list_sorted;
