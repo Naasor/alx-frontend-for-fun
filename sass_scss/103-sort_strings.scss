@@ -1,20 +1,33 @@
 /* Sort */
 @import '103-sort_list.scss';
 
-/* Custom sort function using quicksort algorithm */
-@function compare($a, $b) {
-  @if str-length($a) != str-length($b) {
-    @return str-length($a) < str-length($b);
-  } @else {
-    @for $i from 1 through str-length($a) {
-      @if str-slice($a, $i, $i) != str-slice($b, $i, $i) {
-        @return str-slice($a, $i, $i) < str-slice($b, $i, $i);
-      }
-    }
-    @return false; // If all characters are equal, they are considered the same
-  }
+/* Function to get the Unicode value of a character */
+@function char-code($char) {
+  $chars: 'abcdefghijklmnopqrstuvwxyz';
+  @return str-index($chars, $char);
 }
 
+/* Function to compare two strings */
+@function compare($a, $b) {
+  $length-a: str-length($a);
+  $length-b: str-length($b);
+  $min-length: if($length-a < $length-b, $length-a, $length-b);
+
+  @for $i from 1 through $min-length {
+    $char-a: str-slice($a, $i, $i);
+    $char-b: str-slice($b, $i, $i);
+
+    @if char-code($char-a) < char-code($char-b) {
+      @return true;
+    } @else if char-code($char-a) > char-code($char-b) {
+      @return false;
+    }
+  }
+
+  @return $length-a < $length-b;
+}
+
+/* Custom sort function using quicksort algorithm */
 @function sort($list) {
   @if length($list) < 2 {
     @return $list;
