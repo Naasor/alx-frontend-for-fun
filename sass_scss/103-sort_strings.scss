@@ -1,12 +1,13 @@
 /* Sort */
 @import '103-sort_list';
+@use "sass:list";
 
 // Function to sort the list
 @function sort-list($list) {
   $sorted-list: ();
 
   @each $item in $list {
-    $sorted-list: list-append($sorted-list, $item);
+    $sorted-list: list.append($sorted-list, $item);
   }
 
   @return $sorted-list;
