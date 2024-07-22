@@ -1,12 +1,6 @@
 /* Sort */
 @import '103-sort_list.scss';
 
-/* Function to get the Unicode value of a character */
-@function char-code($char) {
-  $chars: 'abcdefghijklmnopqrstuvwxyz';
-  @return str-index($chars, $char);
-}
-
 /* Function to compare two strings */
 @function compare($a, $b) {
   $length-a: str-length($a);
@@ -17,10 +11,8 @@
     $char-a: str-slice($a, $i, $i);
     $char-b: str-slice($b, $i, $i);
 
-    @if char-code($char-a) < char-code($char-b) {
-      @return true;
-    } @else if char-code($char-a) > char-code($char-b) {
-      @return false;
+    @if $char-a != $char-b {
+      @return $char-a < $char-b;
     }
   }
 
