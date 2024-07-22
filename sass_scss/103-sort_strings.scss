@@ -19,29 +19,24 @@
   @return $length-a < $length-b;
 }
 
-/* Custom sort function using quicksort algorithm */
+/* Custom sort function using a bubble sort algorithm */
 @function sort($list) {
-  @if length($list) < 2 {
-    @return $list;
-  }
+  $n: length($list);
+  $sorted: $list;
 
-  $pivot: nth($list, 1);
-  $rest: ();
-  @for $i from 2 through length($list) {
-    $rest: append($rest, nth($list, $i));
-  }
+  @for $i from 1 through $n - 1 {
+    @for $j from 1 through $n - $i {
+      $current: nth($sorted, $j);
+      $next: nth($sorted, $j + 1);
 
-  $left: ();
-  $right: ();
-  @each $item in $rest {
-    @if compare($item, $pivot) {
-      $left: append($left, $item);
-    } @else {
-      $right: append($right, $item);
+      @if not compare($current, $next) {
+        $sorted: set-nth($sorted, $j, $next);
+        $sorted: set-nth($sorted, $j + 1, $current);
+      }
     }
   }
 
-  @return join(join(sort($left), $pivot, comma), sort($right), comma);
+  @return $sorted;
 }
 
 $list_sorted: sort($list_to_sort);
