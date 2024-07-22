@@ -1,37 +1,33 @@
-/* Sort */
-@import '103-sort_list.scss';
+/* 103-sort_list.scss */
+/* Define the list to sort */
+$list_to_sort: (
+  'orange',
+  'apple',
+  'banana',
+  'grape',
+  'mango'
+);
 
-/* Function to compare two strings */
+// Define a function to compare two strings
 @function compare($a, $b) {
-  $length-a: str-length($a);
-  $length-b: str-length($b);
-  $min-length: if($length-a < $length-b, $length-a, $length-b);
-
-  @for $i from 1 through $min-length {
-    $char-a: str-slice($a, $i, $i);
-    $char-b: str-slice($b, $i, $i);
-
-    @if $char-a != $char-b {
-      @return $char-a < $char-b;
-    }
-  }
-
-  @return $length-a < $length-b;
+  @return $a < $b;
 }
 
-/* Custom sort function using a bubble sort algorithm */
-@function sort($list) {
-  $n: length($list);
+// Define a function to perform bubble sort
+@function bubbleSort($list) {
+  $length: length($list);
   $sorted: $list;
+  $swap: true;
 
-  @for $i from 1 through $n - 1 {
-    @for $j from 1 through $n - $i {
-      $current: nth($sorted, $j);
-      $next: nth($sorted, $j + 1);
+  @while $swap {
+    $swap: false;
 
-      @if not compare($current, $next) {
-        $sorted: set-nth($sorted, $j, $next);
-        $sorted: set-nth($sorted, $j + 1, $current);
+    @for $i from 1 through $length - 1 {
+      @if compare(nth($sorted, $i), nth($sorted, $i + 1)) {
+        $temp: nth($sorted, $i);
+        $sorted: set-nth($sorted, $i, nth($sorted, $i + 1));
+        $sorted: set-nth($sorted, $i + 1, $temp);
+        $swap: true;
       }
     }
   }
@@ -39,6 +35,8 @@
   @return $sorted;
 }
 
-$list_sorted: sort($list_to_sort);
+// Sort the list using bubble sort
+$sortedList: bubbleSort($list_to_sort);
 
-@debug $list_to_sort;
+// Print the sorted list in the debug output
+@debug $sortedList;
